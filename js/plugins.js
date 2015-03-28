@@ -143,9 +143,7 @@ RequestManager = {};
 
 
 
-var Loader = {
-
-};
+var Loader = {};
 (function ($, window, document, undefined) {
     Loader.init = function(){
 
@@ -293,7 +291,7 @@ var Loader = {
                 }
                 $reqParam[$settings.urlVariables.pageNo] = getParameterByName($settings.urlVariables.pageNo, $(this).attr('href'));
                 /*console.log($reqParam);*/
-                getActivePage($reqParam[$settings.urlVariables.pageNo], $settings.pagination.link);
+                /*getActivePage($reqParam[$settings.urlVariables.pageNo], $settings.pagination.link);*/
                 fetchResults($element, $settings);
                 e.preventDefault();
                 return false;
@@ -306,27 +304,7 @@ var Loader = {
     });
 
 
-    function fetchResults($element, $settings) {
-        var tbody = $($element).find('tbody');
-        var pagWrapper = $($settings.pagination.wrapper);
-        tbody.empty();
-        pagWrapper.empty();
-        Loader.init();
-        console.log($reqParam);
-        $request.Html({
-            url: $settings.requestUrl,
-            data: $reqParam
-        }).done(function (response) {
-            Loader.set(20);
-            /*tbody.find('.' + $settings.loader).remove();*/
-            tbody.append(response.data);
-            pagWrapper.append(response.pagination);
-            //Loader.finish();
-        }).fail(function (jqXHR, textStatus, errorThrown) {
-            console.log(textStatus);
-            console.log(errorThrown)
-        });
-    }
+
 
 
     // A really lightweight plugin wrapper around the constructor,
@@ -343,6 +321,35 @@ var Loader = {
         });
     };
 
+
+    function fetchResults($element, $settings) {
+        var tbody = $($element).find('tbody');
+        var pagWrapper = $($settings.pagination.wrapper);
+
+        Loader.init();
+
+        /*console.log();*/
+        $.extend($reqParam, getUrlVars());
+        console.log($reqParam);
+        $request.Html({
+            url: $settings.requestUrl,
+            data: $reqParam
+        }).done(function (response) {
+            Loader.set(20);
+            tbody.empty();
+            pagWrapper.empty();
+            /*tbody.find('.' + $settings.loader).remove();*/
+            response = JSON.parse(response);
+            tbody.append(response.data);
+            pagWrapper.append(response.pagination);
+            Loader.finish();
+            //Loader.finish();
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            console.log(textStatus);
+            console.log(errorThrown)
+        });
+    }
+
 })(jQuery, window, document);
 
 function getParameterByName(name, $url) {
@@ -353,6 +360,19 @@ function getParameterByName(name, $url) {
     /*console.log(results);*/
     /*console.log(location.search);*/
     return results === null ? "" : results[1].replace(/\+/g, " ");
+}
+
+function getUrlVars()
+{
+    var vars = [], hash;
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for(var i = 0; i < hashes.length; i++)
+    {
+        hash = hashes[i].split('=');
+        /*vars.push(hash[0]);*/
+        vars[hash[0]] = hash[1];
+    }
+    return vars;
 }
 
 function getActivePage($pageNo, $element){
