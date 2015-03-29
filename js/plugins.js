@@ -183,6 +183,7 @@ var Loader = {};
     var pluginName = "ajaxtable",
         defaults = {
             requestUrl: '/',
+            lazyload : true,
             sortClass: '.sortableHeading',
             caretUp: '<span class="ajaxCaret glyphicon glyphicon-chevron-up"></span>',
             caretDown: '<span class="ajaxCaret glyphicon glyphicon-chevron-down"></span>',
@@ -244,6 +245,10 @@ var Loader = {};
             this.wrapTable(this.element, this.settings);
 
             this.registerEvents(this.element, this.settings);
+
+            if(this.settings.lazyload){
+                fetchResults();
+            }
 
 
         },
