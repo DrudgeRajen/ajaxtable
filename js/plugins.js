@@ -242,15 +242,21 @@ var Loader = {};
             // you can add more functions like the one below and
             // call them like so: this.yourOtherFunction(this.element, this.settings).
 
+            this.initConfig(this.element, this.settings);
             this.wrapTable(this.element, this.settings);
 
             this.registerEvents(this.element, this.settings);
 
             if(this.settings.lazyload){
-                fetchResults();
+                fetchResults(this.element, this.settings);
             }
 
 
+        },
+        initConfig : function($element, $settings){
+            if($($element).attr('data-requestUrl')){
+                $settings['requestUrl'] = $($element).attr('data-requestUrl');
+            }
         },
         wrapTable: function ($element, $settings) {
             $($element).wrap('<div class="ajaxtable" />');

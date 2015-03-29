@@ -1,5 +1,3 @@
 $(function(){
-    $(".table").ajaxtable({
-        requestUrl : 'result.php'
-    });
+    $(".table").ajaxtable();
 });
