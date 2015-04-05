@@ -5,7 +5,7 @@ Ajax wrapper for table display for sorting and pagination
 Required files are add
 
     <link rel="stylesheet" href="css/ajaxtable.css">
-    <script src="js/plugins.css"></script>
+    <script src="js/plugins.js"></script>
     //Then you can do
     $(".ajaxtable").ajaxtable();
 
